@@ -2,12 +2,12 @@ package com.ani.graphs;
 
 class Vertex{
 	
-	int value;
-	public int getValue() {
+	char value;
+	public char getValue() {
 		return value;
 	}
 
-	public void setValue(int value) {
+	public void setValue(char value) {
 		this.value = value;
 	}
 
@@ -21,7 +21,7 @@ class Vertex{
 
 	boolean visited;
 	
-	Vertex(int value, boolean visited)
+	Vertex(char value, boolean visited)
 	{
 		this.value = value;
 		this.visited = visited;
