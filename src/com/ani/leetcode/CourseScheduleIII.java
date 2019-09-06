@@ -4,7 +4,7 @@
 package com.ani.leetcode;
 
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.PriorityQueue;
 
 /**
  * @author aniket
@@ -46,9 +46,39 @@ public class CourseScheduleIII {
 		
 		
 		
-		int[][] courses1 ={{7,16},{2,3},{3,12},{3,14},{10,19},{10,16},{6,8},{6,11},{3,13},{6,16}};
+		int[][] courses1 ={{7,17},
+						   {3,12},
+						   {10,20},
+						   {9,10},
+						   {5,20},
+						   {10,19},
+						   {4,18}};
 		
-		System.out.println(scheduleCourse(courses1));
+		
+		
+		
+		int[][] courses2 ={{7,16},{2,3},{3,12},{3,14},{10,19},{10,16},{6,8},{6,11},{3,13},{6,16}
+};
+		
+		
+		
+		int[][] course3={{591,2987},{905,974},{267,6878},
+				{429,6721},{137,8097},{888,2239},{787,6628},{40,4439},
+				{173,7560},{726,3298},{453,6884},{490,2146},{822,9678},
+				{929,9673},{304,2212},{669,2829},{437,4696}};
+
+		//Let's print the contents of priority queue:
+		
+        PriorityQueue<Integer> pq=new PriorityQueue<>((a,b)->b-a);
+        
+
+        
+        
+        
+        
+        
+		
+		System.out.println(scheduleCourse(course3));
 	}
 	
 	public  static int scheduleCourse(int[][] courses) {
@@ -58,7 +88,6 @@ public class CourseScheduleIII {
 		
 		Arrays.sort(courses, (a,b)->Integer.compare(a[1], b[1]));
 		
-		int Max=Integer.MIN_VALUE,count=1;
 		
 		//print the array to check if this is  correctly sorted
 		
@@ -74,35 +103,38 @@ public class CourseScheduleIII {
 			tempArray[i] = courses[i][0];
 			countArray[i] =1; //initialize all the counts with 1
 		}
-		Max = tempArray[0];//first value
 		
   //Now that the array is sorted, apply the below logic
 		
    //iterate through all the courses
 		
 		for(int i=1;i<courses.length;i++) {
-			
 			for(int k=0;k<i;k++) {
-				int tempVal = tempArray[i]+tempArray[k];//adding the days
+				int tempVal = courses[i][0]+tempArray[k];//adding the days
 				
-				if(tempVal>courses[i][1]) {
+		if(tempVal>courses[i][1]) {
 					//check it against the total days allocated, not feasible to use it.
 					
+					if(courses[i][0] + courses[k][0]<=courses[i][1] && countArray[i]<=2 ) {
+						tempArray[i] = courses[i][0] + courses[k][0];
+						countArray[i] = 2;
+					}
+					else {
 					tempArray[i] = tempArray[i];
-				} else { 
+					}
 					
-				tempArray[i] = Math.max(tempArray[i], tempVal);
-				countArray[i] = countArray[k]+1;
 				
-				}}
+				
+		} else if(countArray[k]+1>countArray[i]){ 
+					
+				countArray[i] = countArray[k]+1;
+				tempArray[i] = tempVal;
+				}
+				
+				else {
+					tempArray[i] =Math.min(tempVal, tempArray[i]);}
+				}
 			
-			//check if the current value is considered or not
-			
-			 if (tempArray[i]>=Max) {
-				 Max= tempArray[i]; 
-				 count= countArray[i]; }
-			 
-			 
 		}
 	
 		
