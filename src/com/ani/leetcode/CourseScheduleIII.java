@@ -78,8 +78,17 @@ public class CourseScheduleIII {
         
         
 		
-		System.out.println(scheduleCourse(course3));
+		System.out.println(scheduleCoursePriorityQueue(courses1));
 	}
+	
+	
+	
+	
+	//The below solution does not work and is too complicated.
+	//Infact this is a greedy problem and not a DP problem
+	//To remember : This is different from the weighted Job scheduling problem, where you need to find the maximum profit .
+	//This problem would have become similar to weighted job scheduling if the ask was  - Find the maximum/minimum value value from the courses.
+	
 	
 	public  static int scheduleCourse(int[][] courses) {
         
@@ -116,7 +125,7 @@ public class CourseScheduleIII {
 					//check it against the total days allocated, not feasible to use it.
 					
 					if(courses[i][0] + courses[k][0]<=courses[i][1] && countArray[i]<=2 ) {
-						tempArray[i] = courses[i][0] + courses[k][0];
+						tempArray[i] = Math.min(courses[i][0] + courses[k][0], tempArray[i]);
 						countArray[i] = 2;
 					}
 					else {
@@ -143,5 +152,46 @@ public class CourseScheduleIII {
 		
 		
     return countArray[countArray.length-1];}
+	
+	
+	
+	
+	
+	
+	
+	public  static int scheduleCoursePriorityQueue(int[][] courses) {
+		
+		
+		//Sort the timings
+		Arrays.sort(courses,(a,b)->Integer.compare(a[1], b[1]));
+		
+		//Using a priority queue
+		//The items need to be in descending order
 
+		PriorityQueue<Integer> feasibleCourses = new PriorityQueue<>((a,b)->b-a);
+		
+		
+		int time=0;
+		
+		for(int i=0;i<courses.length;i++) {
+			
+			feasibleCourses.add(courses[i][0]);
+			//System.out.println("Feasible courses are: "+feasibleCourses.peek());
+			time = time+courses[i][0];
+
+			
+			if(time>courses[i][1]) {
+				time = time-feasibleCourses.poll();
+				//feasibleCourses.stream().forEach(System.out::println);
+
+			}
+		}
+	
+		
+		
+		return feasibleCourses.size();
+
+
+}
+	
 }
